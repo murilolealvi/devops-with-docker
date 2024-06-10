@@ -21,7 +21,7 @@ Then I executed the *prune* command for these images:
 ~~~bash
 docker image prune
 ~~~
-However, it did not cleaned nothing at all. Then I concluded that it only deletes dangling images, that is the ones that don't have **SHA256 digest** attached to it. In other words, your hash identifier. It is done when the image does not have a child image, like *ubuntu:latest* or builded without a tag(references the hash identifier).
+However, it did not cleaned nothing at all. Then I concluded that it only deletes dangling images, that is the ones that don't have **SHA256 digest** attached to it. In other words, your hash identifier. It is done when the image does not have a child image, like *ubuntu:latest* or built without a tag(references the hash identifier).
 
 So to actually delete the unused images, I used the command:
 ~~~bash

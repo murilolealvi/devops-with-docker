@@ -24,7 +24,7 @@ The build process is separated in layers to optimize your installation. Describi
 
 ## Exercise 1.6 - Hello Docker Hub
 
-Initiate running the image not yet builded, so it will search it on Docker Hub:
+Initiate running the image not yet built, so it will search it on Docker Hub:
 
 ![alt text](images/image-2.png)
 
