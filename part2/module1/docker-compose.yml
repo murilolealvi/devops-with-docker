@@ -1,0 +1,39 @@
+# exercise 2.1
+
+# version: 'beta' #tag
+
+# services:
+#   simple-web-service:
+#     image: devopsdockeruh/simple-web-service
+#     volumes: 
+#       - ./text.log:/usr/src/app/text.log
+#     container_name: log-generator
+
+
+# exercise 2.2
+
+# services:
+#   server:
+#     image: devopsdockeruh/simple-web-service
+#     container_name: webserver
+#     ports:
+#       - 8080:8080
+#     command: server
+
+
+# exercise 2.3
+
+services:
+  frontend-compose:
+      build: example-frontend/
+      ports:
+          - 5000:5000
+  backend-compose:
+      build: example-backend/
+      ports:
+          - 8000:8080
+    
+    
+    
+
+    
