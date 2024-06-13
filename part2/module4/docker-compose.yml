@@ -1,0 +1,81 @@
+
+
+services:
+  postgres-compose:
+    image: postgres:alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=docker
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    labels:
+      - traefik.enable=true
+      - traefik.tcp.routers.postgres.rule=HostSNI("*")
+      - traefik.tcp.routers.postgres.entrypoints=postgres
+      - traefik.tcp.services.postgres.loadbalancer.server.port=5432
+    depends_on:
+      - traefik
+      
+  redis-compose:
+    image: redis:alpine
+    restart: always
+    command: redis-server --save 60 1 --requirepass docker
+    volumes:
+      - cache:/data
+    labels:
+      - traefik.enable=true
+      - traefik.tcp.routers.redis.rule=HostSNI("*")
+      - traefik.tcp.routers.redis.entrypoints=redis
+      - traefik.tcp.services.redis-compose.loadbalancer.server.port=6379
+    depends_on:
+      - traefik
+
+  cloudbeaver:
+    image: dbeaver/cloudbeaver
+    restart: unless-stopped
+    volumes:
+      - cloudbeaver:/opt/cloudbeaver/workspace
+    environment:
+      - CB_SERVER_URL="cloudbeaver.localhost"
+    depends_on:
+      - postgres-compose
+      - redis-compose
+      - traefik
+    labels:
+      - traefik.enable=true
+      #HTTP
+      - traefik.http.routers.dBeaverRedirect.entrypoints=web
+      - traefik.http.routers.dBeaverRedirect.rule=Host("cloudbeaver.localhost")
+      - traefik.http.routers.dBeaverRedirect.tls=false
+      #HTTPS
+      - traefik.http.routers.dBeaver.entrypoints=websecure
+      - traefik.http.routers.dBeaver.rule=Host("cloudbeaver.localhost")
+      - traefik.http.routers.dBeaver.tls=true
+      # #MIDDLEWARE
+      - traefik.http.middlewares.redirect-web-secure.redirectscheme.scheme=https
+      - traefik.http.routers.dBeaverRedirect.middlewares=redirect-web-secure
+
+  
+  traefik:
+    image: traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/etc/traefik/traefik.yml
+    command: --configfile=/traefik.yml
+    labels:
+      - traefik.enable=true
+    ports:
+      - 80:80
+      - 8080:8080
+      - 443:443
+      - 5432:5432
+      - 6379:6379
+
+volumes:
+  cloudbeaver:
+    driver: local
+  postgres:
+    driver: local
+  cache:
+    driver: local
+    

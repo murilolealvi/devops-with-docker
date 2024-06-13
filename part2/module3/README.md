@@ -112,7 +112,7 @@ Running *docker compose up* and testing on browser at the proxy's endpoint:
 
 ![alt text](images/image-7.png)
 
-An error occurred.This is because the proxy communicates with the other services internally, so it's based on the **container's exposed port**. Moreover, the API for *ping* is located at *http://localhost/api/ping?*, for that is must be modified in *nginx.conf* file:
+An error occurred. This is because the proxy communicates with the other services internally, so it's based on the **container's exposed port**. Moreover, the API for *ping* is located at *http://localhost/api/ping?*, for that the *nginx.conf* file must be modified:
 
 ![alt text](images/image-8.png)
 
@@ -150,7 +150,7 @@ However, we must point to the proxy some APIs to get requests persisted with Red
     proxy_pass http://backend-compose:8080/ping?redis=true;
   }
 
-  location /api/ping/?postgres=true/ {
+  location /api/ping?postgres=true/ {
     proxy_set_header Host $host;
     proxy_pass http://backend-compose:8080/ping?postgres=true/;
   }
