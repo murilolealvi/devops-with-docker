@@ -105,4 +105,6 @@ Well, I misunderstood the **tag** concept. It is the directory where should buil
 ~~~yml
 with:
     push: true
-    tags: part3/module2/express-app:latest
+    tags: ./part3/module2/express-app
+~~~
+
