@@ -60,7 +60,7 @@ So, we can list the images and see:
 
 ![alt text](image.png)
 
-It runned well. After that, we formulate the *deploy.yml* file already at .github/workflows directory. It's the same as the one defined in the module, but we need to change the **action's version**, the **main** branch and the **tag** that references the image to be pushed:
+It runned well. After that, we formulate the *nodejs-app.yml* file already at .github/workflows directory. It's the same as the one defined in the module, but we need to change the **action's version**, the **main** branch and the **tag** that references the image to be pushed:
 
 ~~~yml
 name: Release Node.js app
@@ -108,4 +108,41 @@ with:
     push: true
     tags: muriloleal/nodejs-app:latest
 ~~~
+
+Let's see:
+
+![alt text](image-4.png)
+
+It worked! At Docker Hub's page:
+
+![alt text](image-5.png)
+
+We run at the terminal to test the image:
+~~~bash
+docker run -d -p 8080:8080 muriloleal/nodejs-app 
+~~~
+
+In the browser:
+
+![alt text](image-6.png)
+
+So, it's all set. Now, let's define the *docker-compose.yml* in a way that **Watchtower** keeps monitoring the *Nodejs* application:
+
+~~~yml
+
+services:
+  nodejs-app:
+    image: muriloleal/nodejs-app:latest
+    ports:
+      - 8080:8080
+  watchtower:
+    image: containrrr/watchtower
+    environment:
+      -  WATCHTOWER_POLL_INTERVAL=60 # Poll every 60 seconds
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    container_name: watchtower
+~~~
+
+
 
