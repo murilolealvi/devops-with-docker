@@ -20,6 +20,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
+          context: part3/module2/express-app
           push: true
-          tags: devops-with-docker/part3/module2/express-app
+          tags: muriloleal/nodejs-app:latest
     

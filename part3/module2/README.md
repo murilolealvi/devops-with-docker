@@ -100,11 +100,12 @@ Then, it's time to test:
 
 ![alt text](image-3.png)
 
-Well, I misunderstood the **tag** concept. It is the directory where should build the image. Renaming it:
+Well, I must pass the **context** field. It is the full directory where should build the image. Renaming it:
 
 ~~~yml
 with:
+    context: part3/module2/express-app
     push: true
-    tags: ./part3/module2/express-app
+    tags: muriloleal/nodejs-app:latest
 ~~~
 
