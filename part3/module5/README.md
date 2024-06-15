@@ -3,6 +3,7 @@
 Manage a pool of containers is a difficult task. For that, we can use **Docker swarm** and **Kubernetes**. With them, it's possible scale and deploy multiple instances in a multi-host environment.
 
 ## Exercise 3.11
+The diagram is modeled:
 
 ![Kubernetes diagram](K8s-diagram.png)
 
